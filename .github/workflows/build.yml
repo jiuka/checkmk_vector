@@ -25,9 +25,9 @@ jobs:
           VERSION=$(python3 -c 'print(eval(open("package").read())["version"])')
           echo "CMKPKG_NAME=$NAME" >> "$GITHUB_ENV"
           echo "CMKPKG_VERSION=$VERSION" >> "$GITHUB_ENV"
-      - name: Install Plugin
+      - name: Setup Symlinks Plugin
         run: |
-          rsync -aC --chown=cmk:cmk $GITHUB_WORKSPACE/ /omd/sites/cmk/local/lib/python3/cmk_addons/plugins/$CMKPKG_NAME/
+          .devcontainer/symlink.sh
       - name: Build Extension
         run: |
           su -l -c "mkp -v package $GITHUB_WORKSPACE/package" cmk

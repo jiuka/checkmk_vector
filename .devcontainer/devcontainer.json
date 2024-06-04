@@ -29,9 +29,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	//"postCreateCommand": ".devcontainer/symlink.sh",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/omd/sites/cmk/local/lib/python3/cmk_addons/plugins/vector,type=bind,consistency=cached",
-	"workspaceFolder": "/omd/sites/cmk/local/lib/python3/cmk_addons/plugins/vector",
+	"postCreateCommand": ".devcontainer/symlink.sh",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "cmk",

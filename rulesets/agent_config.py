@@ -24,7 +24,6 @@ from cmk.rulesets.v1.form_specs import (
     DefaultValue,
     SingleChoice,
     SingleChoiceElement,
-    DictGroup,
 )
 from cmk.rulesets.v1.rule_specs import AgentConfig, Topic
 

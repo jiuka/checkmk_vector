@@ -17,59 +17,51 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
-from cmk.graphing.v1.metrics import (
-    Metric,
-    Unit,
-    DecimalNotation,
-    Color,
-    Title,
-    StrictPrecision,
-)
-from cmk.graphing.v1.graphs import (
-    Graph
-)
-from cmk.graphing.v1.perfometers import (
-    Perfometer,
-    FocusRange,
-    Closed,
-    Open,
-    Bidirectional,
+from cmk.graphing.v1 import (
+    graphs as g,
+    metrics as m,
+    perfometers as p,
 )
 
-metric_vector_recv_event = Metric(
+metric_vector_recv_event = m.Metric(
     name='recv_event',
-    title=Title('Events received'),
-    unit=Unit(DecimalNotation(""), StrictPrecision(0)),
-    color=Color.BLUE,
+    title=m.Title('Events received'),
+    unit=m.Unit(m.DecimalNotation(""), m.StrictPrecision(0)),
+    color=m.Color.GREEN,
 )
 
-metric_vector_sent_event = Metric(
+metric_vector_sent_event = m.Metric(
     name='sent_event',
-    title=Title('Events sent'),
-    unit=Unit(DecimalNotation(""), StrictPrecision(0)),
-    color=Color.GREEN,
+    title=m.Title('Events sent'),
+    unit=m.Unit(m.DecimalNotation(""), m.StrictPrecision(0)),
+    color=m.Color.BLUE,
 )
 
-graph_vector_component_events = Graph(
+graph_vector_component_events = g.Bidirectional(
     name='vector_component_events',
-    title=Title('Vector Events'),
-    compound_lines=[
-        'recv_event',
-        'sent_event',
-    ],
+    title=g.Title('Vector Events'),
+    upper=g.Graph(
+        name='vector_component_events_recv_event',
+        title=g.Title('upper'),
+        compound_lines=['recv_event'],
+    ),
+    lower=g.Graph(
+        name='vector_component_events_sent_event',
+        title=g.Title('upper'),
+        compound_lines=['sent_event'],
+    ),
 )
 
-perfometer_vector_component = Bidirectional(
+perfometer_vector_component = p.Bidirectional(
     name='vector_component',
-    left=Perfometer(
+    left=p.Perfometer(
         name='vector_component_recv_event',
-        focus_range=FocusRange(Closed(0), Open(100)),
+        focus_range=p.FocusRange(p.Closed(0), p.Open(100)),
         segments=['recv_event']
     ),
-    right=Perfometer(
+    right=p.Perfometer(
         name='vector_component_sent_event',
-        focus_range=FocusRange(Closed(0), Open(100)),
+        focus_range=p.FocusRange(p.Closed(0), p.Open(100)),
         segments=['sent_event']
     ),
 )

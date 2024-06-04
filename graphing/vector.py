@@ -17,49 +17,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
-from cmk.graphing.v1.metrics import (
-    Metric,
-    Unit,
-    DecimalNotation,
-    Color,
-    Title,
-    StrictPrecision,
-)
-from cmk.graphing.v1.graphs import (
-    Graph
-)
-from cmk.graphing.v1.perfometers import (
-    Perfometer,
-    FocusRange,
-    Closed,
-    Open,
+from cmk.graphing.v1 import (
+    graphs as g,
+    metrics as m,
+    perfometers as p,
 )
 
-metric_vector_source = Metric(
+metric_vector_source = m.Metric(
     name='vector_source',
-    title=Title('Sources'),
-    unit=Unit(DecimalNotation(""), StrictPrecision(0)),
-    color=Color.BLUE,
+    title=m.Title('Sources'),
+    unit=m.Unit(m.DecimalNotation(""), m.StrictPrecision(0)),
+    color=m.Color.BLUE,
 )
 
-metric_vector_transform = Metric(
+metric_vector_transform = m.Metric(
     name='vector_transform',
-    title=Title('Transforms'),
-    unit=Unit(DecimalNotation(""), StrictPrecision(0)),
-    color=Color.ORANGE,
+    title=m.Title('Transforms'),
+    unit=m.Unit(m.DecimalNotation(""), m.StrictPrecision(0)),
+    color=m.Color.ORANGE,
 )
 
-metric_vector_sink = Metric(
+metric_vector_sink = m.Metric(
     name='vector_sink',
-    title=Title('Sinks'),
-    unit=Unit(DecimalNotation(""), StrictPrecision(0)),
-    color=Color.GREEN,
+    title=m.Title('Sinks'),
+    unit=m.Unit(m.DecimalNotation(""), m.StrictPrecision(0)),
+    color=m.Color.GREEN,
 )
 
-graph_vector = Graph(
+graph_vector = g.Graph(
     name='vector',
-    title=Title('Vector'),
+    title=g.Title('Vector'),
     compound_lines=[
         'vector_source',
         'vector_transform',
@@ -67,9 +54,9 @@ graph_vector = Graph(
     ],
 )
 
-perfometer_vector = Perfometer(
+perfometer_vector = p.Perfometer(
     name='vector',
-    focus_range=FocusRange(Closed(0), Open(1)),
+    focus_range=p.FocusRange(p.Closed(0), p.Open(1)),
     segments=[
         'vector_source',
         'vector_transform',

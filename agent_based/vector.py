@@ -19,21 +19,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import re
 import json
 from cmk.agent_based.v2 import (
     AgentSection,
-    check_levels,
     CheckPlugin,
-    render,
+    Metric,
     Result,
     Service,
     State,
-    get_rate,
-    get_value_store,
-    GetRateError,
-    RuleSetType,
-    Metric,
 )
 
 

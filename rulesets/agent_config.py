@@ -17,23 +17,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-from cmk.rulesets.v1 import Title, Label
+from cmk.rulesets.v1 import Title
 from cmk.rulesets.v1.form_specs import (
     DictElement,
     Dictionary,
     DefaultValue,
     SingleChoice,
     SingleChoiceElement,
-    List,
-    String,
-    InputHint,
     DictGroup,
 )
 from cmk.rulesets.v1.rule_specs import AgentConfig, Topic
 
 
 def _parameter_form_vector_bakery():
-    socket_group = DictGroup()
     return Dictionary(
         elements={
             'deploy': DictElement(

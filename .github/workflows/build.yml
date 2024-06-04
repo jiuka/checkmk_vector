@@ -35,6 +35,7 @@ jobs:
           .devcontainer/symlink.sh
       - name: Build Extension
         run: |
+          chown -R cmk:cmk $GITHUB_WORKSPACE
           su -l -c "mkp -v package $GITHUB_WORKSPACE/package" cmk
           cp /omd/sites/cmk/var/check_mk/packages_local/${CMKPKG_NAME}-${CMKPKG_VERSION}.mkp .
           echo "pkgfile=${CMKPKG_NAME}-${CMKPKG_VERSION}.mkp" >> $GITHUB_OUTPUT

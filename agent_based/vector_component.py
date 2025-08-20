@@ -21,18 +21,20 @@
 
 import re
 import json
+from collections.abc import Mapping
 from cmk.agent_based.v2 import (
     AgentSection,
     check_levels,
     CheckPlugin,
-    render,
-    Result,
-    Service,
-    State,
+    CheckResult,
     get_rate,
     get_value_store,
     GetRateError,
+    render,
+    Result,
     RuleSetType,
+    Service,
+    State,
 )
 
 
@@ -182,6 +184,27 @@ def check_vector_component(item, params, section):
                                 levels_lower=params.get('sent_byte_lower'),
                                 metric_name='sent_byte',
                                 boundaries=(0, None))
+
+
+def cluster_check_vector_component(
+    item,
+    params,
+    section: Mapping[str, dict | None]
+) -> CheckResult:
+    section_combined = {}
+    for member in section:
+        if item not in section[member]:
+            continue
+
+        for key in section[member][item]:
+            if key == 'componentType':
+                section_combined['componentType'] = section[member][item]['componentType']
+                continue
+            section_combined[key] = section_combined.get(key, 0) + section[member][item].get(key, 0)
+
+    if not section_combined:
+        return
+    yield from check_vector_component(item, params, {item: section_combined})
 
 
 check_plugin_vector_source = CheckPlugin(

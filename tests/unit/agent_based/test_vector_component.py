@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import pytest  # type: ignore[import]
-from cmk.base.plugins.agent_based.agent_based_api.v1 import (
+from cmk.agent_based.v2 import (
     Metric,
     Result,
     Service,
@@ -262,3 +262,38 @@ def test_check_vector_component(monkeypatch, freezer, item, params, result):
 
     monkeypatch.setattr(vector_component, 'get_value_store', lambda: store)
     assert list(vector_component.check_vector_component(item, params, EXAMPLE_SECTION)) == result
+
+
+@pytest.mark.parametrize('item, params, result', [
+    (
+        'Foo', {},
+        []
+    ),
+    (
+        'nps_log',
+        {},
+        [
+            Result(state=State.OK, summary='Type: file'),
+            Result(state=State.OK, summary='Events received: 4.00/s'),
+            Metric('recv_event', 4.0, boundaries=(0.0, None)),
+            Result(state=State.OK, summary='Events sent: 4.00/s'),
+            Metric('sent_event', 4.0, boundaries=(0.0, None)),
+            Result(state=State.OK, summary='Bytes received: 47.5 kBit/s'),
+            Metric('recv_byte', 5934.0, boundaries=(0.0, None)),
+        ]
+    ),
+])
+def test_cluster_check_vector_component(monkeypatch, freezer, item, params, result):
+    freezer.move_to('2024-06-02 10:43')
+    store = {}
+    from cmk.agent_based.v2 import get_rate, GetRateError
+    import time
+    now = time.time() - 1
+    for metric_name in ('recv_byte', 'recv_event', 'sent_event', 'sent_byte'):
+        try:
+            get_rate(store, f"vector_components.{item}.{metric_name}", now, 0)
+        except GetRateError:
+            pass
+
+    monkeypatch.setattr(vector_component, 'get_value_store', lambda: store)
+    assert list(vector_component.cluster_check_vector_component(item, params, {'node1': EXAMPLE_SECTION, 'node2': EXAMPLE_SECTION})) == result

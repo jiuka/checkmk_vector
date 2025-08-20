@@ -217,6 +217,7 @@ check_plugin_vector_source = CheckPlugin(
     check_function=check_vector_component,
     check_ruleset_name='vector_source',
     check_default_parameters={},
+    cluster_check_function=cluster_check_vector_component,
 )
 
 check_plugin_vector_transform = CheckPlugin(
@@ -229,6 +230,7 @@ check_plugin_vector_transform = CheckPlugin(
     check_function=check_vector_component,
     check_ruleset_name='vector_transform',
     check_default_parameters={},
+    cluster_check_function=cluster_check_vector_component,
 )
 
 check_plugin_vector_sink = CheckPlugin(
@@ -241,4 +243,5 @@ check_plugin_vector_sink = CheckPlugin(
     check_function=check_vector_component,
     check_ruleset_name='vector_sink',
     check_default_parameters={},
+    cluster_check_function=cluster_check_vector_component,
 )

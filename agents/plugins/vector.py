@@ -52,7 +52,7 @@ class VectorApi:
                         if v
                     })
                     yield node
-                if not data[type]['pageInfo']['hasNextPage']:
+                if not data[type]['pageInfo']['hasNextPage'] or data[type]['pageInfo']['endCursor'] is None:
                     return
                 start = data[type]['pageInfo']['endCursor']
 
